@@ -245,4 +245,14 @@ class UnusedPrivateClassSpec : SubjectSpek<UnusedPrivateClass>({
 		}
 	}
 
+	it("verifies the fix for wildcards within generics - #1345") {
+		val code = """
+			private class Foo
+			fun bar(clazz: KClass<*>) = Unit
+		""".trimIndent()
+
+		val findings = UnusedPrivateClass().lint(code)
+
+		assertThat(findings).hasSize(1)
+	}
 })
